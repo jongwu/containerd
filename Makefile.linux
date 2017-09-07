@@ -5,3 +5,9 @@ COMMANDS += containerd-shim
 ifeq ("amd64", $(GOARCH))
 	TESTFLAGS_RACE= -race
 endif
+
+# arm64 does not support go lint
+arch=arm64
+ifeq ($(arch), $(GOARCH))
+	LINT=
+endif

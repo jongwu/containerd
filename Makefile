@@ -45,7 +45,7 @@ GO_TAGS=$(if $(BUILDTAGS),-tags "$(BUILDTAGS)",)
 GO_LDFLAGS=-ldflags "-X $(PKG)/version.Version=$(VERSION) -X $(PKG)/version.Revision=$(REVISION) -X $(PKG)/version.Package=$(PKG) $(EXTRA_LDFLAGS)"
 
 TESTFLAGS_RACE=
-
+LINT=lint
 #Detect the target os
 include Makefile.OS
 #include platform specific makefile
@@ -55,12 +55,12 @@ include Makefile.$(target_os)
 TESTFLAGS ?= -v $(TESTFLAGS_RACE)
 TESTFLAGS_PARALLEL ?= 8
 
-.PHONY: clean all AUTHORS fmt vet lint dco build binaries test integration setup generate protos checkprotos coverage ci check help install uninstall vendor release
+.PHONY: clean all AUTHORS fmt vet $(LINT) dco build binaries test integration setup generate protos checkprotos coverage ci check help install uninstall vendor release
 .DEFAULT: default
 
 all: binaries
 
-check: fmt vet lint ineffassign ## run fmt, vet, lint, ineffassign
+check: fmt vet $(LINT) ineffassign ## run fmt, vet, lint, ineffassign
 
 ci: check binaries checkprotos coverage coverage-integration ## to be used by the CI
 
